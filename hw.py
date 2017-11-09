@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Index Page'
+    return 'Index Page here'
 
 @app.route('/user/<username>')
 def show_user_profile(username):
