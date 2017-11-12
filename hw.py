@@ -2,52 +2,80 @@ from flask import Flask
 from flask import url_for
 from flask import request
 from flask import render_template
+from flask import Markup
+from flask import request
+import json
+from flaskext.mysql import MySQL
+#from werkzeug import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
+mysql = MySQL()
+
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
+app.config['MYSQL_DATABASE_DB'] = 's7dbproject'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+mysql.init_app(app)
+
+conn = mysql.connect()
+cursor = conn.cursor()
+
 @app.route('/')
-def index():
-    return 'Index Page'
+def main():
+    return render_template('index.html')
 
-@app.route('/user/<username>')
-def show_user_profile(username):
-    return 'User %s' % username
+@app.route('/showSignUp/')
+def showSignUp():
+    return render_template('signup.html')
 
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    return 'Post %d' %post_id
+@app.route('/signUp', methods=['POST'])
+def signUp():
+    _name = request.form['inputName']
+    _password = request.form['inputPassword']
+    _hashed_password =  _password#generate_password_hash(_password)
+    cursor.callproc('sp_createUser', (_name,_hashed_password))
+    data = cursor.fetchall()
 
-@app.route('/projects/')
-def projects():
-    return 'The project page'
-
-@app.route('/about')
-def about():
-    return 'The about page'
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method =='POST':
-        do_the_login()
+    if len(data) is 0:
+       conn.commit()
+       return json.dumps({'message': 'User created successfully !'})
     else:
-        show_the_login_form()
+       return json.dumps({'error': str(data[0])})
 
-def do_the_login():
-    print ('login logic')
+@app.route('/showAddEmployee/')
+def showAddEmployee():
+    return render_template('addEmployee.html')
 
-def show_the_login_form():
-    print ('login form')
+@app.route('/addEmployee', methods=['POST'])
+def addEmployee():
+    fullname = request.form['fullname']
+    position = request.form['position']
+    cursor.callproc('addEmployee', (fullname, position))
+    data = cursor.fetchall()
 
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-    return render_template('hello.html', name=name)
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'error': str(data[0])})
 
-with app.test_request_context():
-    print (url_for('index'))
-    print (url_for('about'))
-    print (url_for('static', filename='data.txt'))
+@app.route('/showAddProduct/')
+def showAddProduct():
+    return render_template('addProduct.html')
 
+@app.route('/addProduct', methods=['POST'])
+def addProduct():
+    productname = request.form['productname']
+    productdescription = request.form['productdescription']
+    cursor.callproc('addProduct', (productname, productdescription))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'error': str(data[0])})
 
 if __name__ == "__main__":
     app.run(debug=True)
