@@ -21,10 +21,12 @@ mysql.init_app(app)
 conn = mysql.connect()
 cursor = conn.cursor()
 
+#main page
 @app.route('/')
 def main():
     return render_template('index.html')
 
+#sign up
 @app.route('/showSignUp/')
 def showSignUp():
     return render_template('signup.html')
@@ -43,6 +45,7 @@ def signUp():
     else:
        return json.dumps({'error': str(data[0])})
 
+#add employee
 @app.route('/showAddEmployee/')
 def showAddEmployee():
     return render_template('addEmployee.html')
@@ -60,6 +63,7 @@ def addEmployee():
     else:
         return json.dumps({'error': str(data[0])})
 
+#add product
 @app.route('/showAddProduct/')
 def showAddProduct():
     return render_template('addProduct.html')
@@ -76,6 +80,41 @@ def addProduct():
         return json.dumps({'message': 'User created successfully !'})
     else:
         return json.dumps({'error': str(data[0])})
+
+#add employee to product
+@app.route('/showAddEmployeeToProduct/')
+def showAddEmployeeToProduct():
+    return render_template('addEmployeeToProduct.html')
+
+@app.route('/addEmployeeToProduct', methods=['POST'])
+def addEmployeeToProduct():
+    employeename = request.form['employeename']
+    productname = request.form['productname']
+    cursor.callproc('addEmployeeToProduct', (employeename, productname))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'error': str(data[0])})
+
+#find product by employee
+@app.route('/showFindProductByEmployee/')
+def showFindProductByEmployee():
+    return render_template('findProductByEmployee.html')
+
+@app.route('/findProductByEmployee', methods=['POST'])
+def findProductByEmployee():
+    employeename = request.form['employeename']
+    cursor.callproc('findProductByEmployee', (employeename,'kek'))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'response': data})
 
 if __name__ == "__main__":
     app.run(debug=True)
