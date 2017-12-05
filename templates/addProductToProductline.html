@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+
+  <head>
+    <title>Python Flask Bucket List App</title>
+ 
+    
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <!-- link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet" -->
+    <link href="../static/signup.css" rel="stylesheet">
+    
+  </head>
+ 
+  <body>
+ 
+    <div class="container">
+      <div class="header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" ><a href="main">Home</a></li>
+            <li role="presentation"><a href="#">Sign In</a></li>
+            <li role="presentation" class="active"><a href="#">Sign Up</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Python Flask App</h3>
+      </div>
+ 
+      <div class="jumbotron">
+        <h1>Add Employee to Product form</h1>
+        <form class="form-addEmployee">
+        <label for="employeename" class="sr-only">Employee Name</label>
+        <input type="name" name="employeename" id="employeename" class="form-control" placeholder="Employee name" required autofocus>
+        <label for="productname" class="sr-only">Product Name</label>
+        <input type="name" name="productname" id="productname" class="form-control" placeholder="Product name" required>
+         
+        <button id="btnAddEmployeeToProduct" class="btn btn-lg btn-primary btn-block" type="button">addEmployeeToProduct</button>
+      </form>
+      </div>
+ 
+       
+ 
+      <footer class="footer">
+        <p>&copy; Company 2015</p>
+      </footer>
+ 
+    </div>
+  </body>
+  
+  <script>
+  
+  $(function() {
+		$('#btnAddEmployeeToProduct').click(function() {
+			$.ajax({
+				url: '/addEmployeeToProduct',
+				data: $('form').serialize(),
+				type: 'POST',
+				success: function(response) {
+					console.log(response);
+				},
+				error: function(error) {
+					console.log(error);
+				}
+			});
+		});
+	});
+  
+  </script>
+  
+</html>
