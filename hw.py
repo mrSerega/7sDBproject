@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 mysql = MySQL()
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_USER'] = 'guest'
 app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
 app.config['MYSQL_DATABASE_DB'] = 's7dbproject'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
@@ -26,9 +26,45 @@ cursor = conn.cursor()
 def main():
     return render_template('index.html')
 
+#log out
+@app.route('/logOut', methods=['POST'])
+def logOut():
+    app.config['MYSQL_DATABASE_USER'] = 'guest'
+    app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
+    global conn
+    global cursor
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    return 'something'
+
+
+#getUsername
+@app.route('/getUsername', methods=['POST'])
+def getUsername():
+    return app.config['MYSQL_DATABASE_USER']
+
+#sign in
+@app.route('/showSignIn/')
+def showSignIn():
+    return render_template('signin.html')
+
+@app.route('/signIn', methods=['POST'])
+def signIn():
+    username = request.form['username']
+    userpass = request.form['userpass']
+    app.config['MYSQL_DATABASE_USER'] = username
+    app.config['MYSQL_DATABASE_PASSWORD'] = userpass
+    global conn
+    global cursor
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    return 'something'
+
 #sign up
 @app.route('/showSignUp/')
 def showSignUp():
+    if app.config['MYSQL_DATABASE_USER']!='root':
+        return render_template('accessdenied.html')
     return render_template('signup.html')
 
 @app.route('/signUp', methods=['POST'])
@@ -48,6 +84,8 @@ def signUp():
 #add employee
 @app.route('/showAddEmployee/')
 def showAddEmployee():
+    if app.config['MYSQL_DATABASE_USER']=='guest':
+        return render_template('accessdenied.html')
     return render_template('addEmployee.html')
 
 @app.route('/addEmployee', methods=['POST'])
@@ -66,6 +104,8 @@ def addEmployee():
 #add product
 @app.route('/showAddProduct/')
 def showAddProduct():
+    if app.config['MYSQL_DATABASE_USER']=='guest':
+        return render_template('accessdenied.html')
     return render_template('addProduct.html')
 
 @app.route('/addProduct', methods=['POST'])
@@ -84,6 +124,8 @@ def addProduct():
 #add employee to product
 @app.route('/showAddEmployeeToProduct/')
 def showAddEmployeeToProduct():
+    if app.config['MYSQL_DATABASE_USER']=='guest':
+        return render_template('accessdenied.html')
     return render_template('addEmployeeToProduct.html')
 
 @app.route('/addEmployeeToProduct', methods=['POST'])
@@ -113,6 +155,115 @@ def findProductByEmployee():
     if len(data) is 0:
         conn.commit()
         return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'response': data})
+
+#find employees by product
+@app.route('/showFindEmployeesByProduct/')
+def showFindEmployeesByProduct():
+    return render_template('findEmployeesByProduct.html')
+
+@app.route('/findEmployeesByProduct', methods=['POST'])
+def findEmployeesByProduct():
+    productname = request.form['productname']
+    cursor.callproc('findEmployeesByProduct', (productname,'kek'))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'response': data})
+
+#addProductLine
+@app.route('/showAddProductline/')
+def showAddProductLine():
+    if app.config['MYSQL_DATABASE_USER']!='root':
+        return render_template('accessdenied.html')
+    return render_template('addProductLine.html')
+
+@app.route('/addProductline', methods=['POST'])
+def addProductLine():
+    productlinename = request.form['productlinename']
+    productlinedescription = request.form['productlinedescription']
+    cursor.callproc('addProductLine', (productlinename,productlinedescription))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'response': data})
+
+#addProductToProductline
+@app.route('/showAddProductToProductline/')
+def showAddProductToProductline():
+    if app.config['MYSQL_DATABASE_USER']!='root':
+        return render_template('accessdenied.html')
+    return render_template('addProductToProductline.html')
+
+@app.route('/addProductToProductline', methods=['POST'])
+def addProductToProdutline():
+    productname = request.form['productname']
+    productlinename = request.form['productlinename']
+    cursor.callproc('addProductToProductline', (productname,productlinename))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'response': data})
+
+@app.route('/showProfile/<username>')
+def showProfile(username):
+    return render_template('profile.html')
+
+@app.route('/getProfile/<username>', methods=['POST'])
+def getProfile(username):
+    cursor.callproc('getProfile', (username, 'kek'))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'fail!'})
+    else:
+        return json.dumps(data)
+
+@app.route('/showGetUsers')
+def showGetUserse():
+    return render_template('getUsers.html')
+
+@app.route('/getUsers', methods=['POST'])
+def getUsers():
+    cursor.callproc('getUsers')
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'fail!'})
+    else:
+        return json.dumps({'response': data})
+
+@app.route('/getProducts', methods=['POST'])
+def getProducts():
+    cursor.callproc('getProducts')
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'fail!'})
+    else:
+        return json.dumps({'response': data})
+
+@app.route('/getLines', methods=['POST'])
+def getLines():
+    cursor.callproc('getLines')
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'fail!'})
     else:
         return json.dumps({'response': data})
 

@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-  <script src="/static/js/main.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="/static/js/main.js"></script>
 
-  <head>
+<head>
     <title>Python Flask Bucket List App</title>
  
-    
+ 
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
  
-    <!-- link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet" -->
+    <!--<link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">-->
     <link href="../static/signup.css" rel="stylesheet">
-    
-  </head>
  
-  <body onLoad="getUsername()">
+</head>
  
+<body onLoad = loadProfile()>
     <div class="container">
         <div class="header">
             <nav>
@@ -35,7 +34,7 @@
                     </li>
                     <li role="presentation"><a href="/showFindProductByEmployee">Find Product By Employee|</a>
                     </li>
-                    <li role="presentation"><a href="/showFindEmployeesByProduct"><b>Find Employees By Product</b>|</a>
+                    <li role="presentation"><a href="/showFindEmployeesByProduct">Find Employees By Product|</a>
                     </li>
                     <li role="presentation"><a href="/showAddProductline">Add Productline|</a>
                     </li>
@@ -45,52 +44,31 @@
             </li>
                 </ul>
             </nav>
-            <div name="cur_user" id="cur_user">
+            <p>
+                <div name="cur_user" id="cur_user">
                 <h3 class="text-muted">Python Flask App</h3>
-            </div>
+                </div>
             <button id="btnLogOut" class="btn btn-primary" type="button">Log out</button>
+            </p>
+
+        </div>
+
+        <div class="jumbotron">
+            <div name="fullname" id="fullname">test</div>
+            <div name="position" id="position">test</div>
+            <div name="product" id="product">test</div>
+            <div name="department" id="department">test</div>
         </div>
  
-      <div class="jumbotron">
-        <h1>Find Employees by Product</h1>
-        <form class="form-addEmployee">
-        <label for="productname" class="sr-only">Product name</label>
-        <input type="name" name="productname" id="productname" class="form-control" placeholder="Product name" required autofocus>
-          <p></p>
-          <table class="table table-striped table-bordered"  id="excelDataTable" border="1"></table>
-        <button id="btnFindEmployeesByProduct" class="btn btn-lg btn-primary btn-block" type="button">findEmployeesByProduct</button>
-      </form>
-      </div>
- 
-       
- 
-      <footer class="footer">
-        <p>&copy; Company 2015</p>
-      </footer>
+        <footer class="footer">
+            <p>&copy; Company 2015</p>
+        </footer>
  
     </div>
-  </body>
-  
-  <script>
-  
-  $(function() {
-		$('#btnFindEmployeesByProduct').click(function() {
-			$.ajax({
-				url: '/findEmployeesByProduct',
-				data: $('form').serialize(),
-				type: 'POST',
-				success: function(response) {
-				    $('#excelDataTable').empty();
-					buildTableUsers('#excelDataTable',JSON.parse(response).response)
-					console.log(response);
-				},
-				error: function(error) {
-					console.log(error);
-				}
-			});
-		});
-	});
-  
-  </script>
-  
+</body>
+
+<script>
+
+</script>
+ 
 </html>

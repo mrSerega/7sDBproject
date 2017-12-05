@@ -2,6 +2,7 @@
 <html lang="en">
 
   <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+  <script src="/static/js/main.js"></script>
 
   <head>
     <title>Python Flask Bucket List App</title>
@@ -14,23 +15,45 @@
     
   </head>
  
-  <body>
+  <body onLoad = getUsername()>
  
     <div class="container">
       <div class="header">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" ><a href="main">Home</a></li>
-            <li role="presentation"><a href="#">Sign In</a></li>
-            <li role="presentation" class="active"><a href="#">Sign Up</a></li>
+            <li role="presentation" class="active"><a href="/">Home|</a>
+            </li>
+            <li role="presentation"><a href="/showSignIn">Sign In|</a>
+            </li>
+            <li role="presentation"><a href="/showSignUp">Create User|</a>
+            </li>
+            <li role="presentation"><a href="/showAddEmployee">Add Employee|</a>
+            </li>
+            <li role="presentation"><a href="/showAddProduct">Add Product|</a>
+            </li>
+            <li role="presentation"><a href="/showAddEmployeeToProduct"><b>Add Employee To Product</b>|</a>
+            </li>
+            <li role="presentation"><a href="/showFindProductByEmployee">Find Product By Employee|</a>
+            </li>
+            <li role="presentation"><a href="/showFindEmployeesByProduct">Find Employees By Product|</a>
+            </li>
+            <li role="presentation"><a href="/showAddProductline">Add Productline|</a>
+            </li>
+            <li role="presentation"><a href="/showAddProductToProductline">Add Product To Productline|</a>
+            </li>
+              <li role="presentation"><a href="/showGetUsers">Show All Employees</a>
+            </li>
           </ul>
         </nav>
-        <h3 class="text-muted">Python Flask App</h3>
+        <div name="cur_user" id="cur_user">
+          <h3 class="text-muted">Python Flask App</h3>
+        </div>
+        <button id="btnLogOut" class="btn btn-primary" type="button">Log out</button>
       </div>
  
       <div class="jumbotron">
         <h1>Add Employee to Product form</h1>
-        <form class="form-addEmployee">
+        <form class="form-signin">
         <label for="employeename" class="sr-only">Employee Name</label>
         <input type="name" name="employeename" id="employeename" class="form-control" placeholder="Employee name" required autofocus>
         <label for="productname" class="sr-only">Product Name</label>

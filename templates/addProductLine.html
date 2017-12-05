@@ -2,6 +2,7 @@
 <html lang="en">
 
   <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+  <script src="/static/js/main.js"></script>
 
   <head>
     <title>Python Flask Bucket List App</title>
@@ -14,29 +15,51 @@
     
   </head>
  
-  <body>
+  <body onLoad = getUsername()>
  
     <div class="container">
       <div class="header">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" ><a href="main">Home</a></li>
-            <li role="presentation"><a href="#">Sign In</a></li>
-            <li role="presentation" class="active"><a href="#">Sign Up</a></li>
+            <li role="presentation" class="active"><a href="/">Home|</a>
+            </li>
+            <li role="presentation"><a href="/showSignIn">Sign In|</a>
+            </li>
+            <li role="presentation"><a href="/showSignUp">Create User|</a>
+            </li>
+            <li role="presentation"><a href="/showAddEmployee">Add Employee|</a>
+            </li>
+            <li role="presentation"><a href="/showAddProduct">Add Product|</a>
+            </li>
+            <li role="presentation"><a href="/showAddEmployeeToProduct">Add Employee To Product|</a>
+            </li>
+            <li role="presentation"><a href="/showFindProductByEmployee">Find Product By Employee|</a>
+            </li>
+            <li role="presentation"><a href="/showFindEmployeesByProduct">Find Employees By Product|</a>
+            </li>
+            <li role="presentation"><a href="/showAddProductline"><b>Add Productline</b>|</a>
+            </li>
+            <li role="presentation"><a href="/showAddProductToProductline">Add Product To Productline|</a>
+            </li>
+              <li role="presentation"><a href="/showGetUsers">Show All Employees</a>
+            </li>
           </ul>
         </nav>
-        <h3 class="text-muted">Python Flask App</h3>
+        <div name="cur_user" id="cur_user">
+          <h3 class="text-muted">Python Flask App</h3>
+        </div>
+        <button id="btnLogOut" class="btn btn-primary" type="button">Log out</button>
       </div>
  
       <div class="jumbotron">
-        <h1>Add Employee Form</h1>
-        <form class="form-addEmployee">
-        <label for="fullname" class="sr-only">Name</label>
-        <input type="name" name="fullname" id="fullname" class="form-control" placeholder="Name" required autofocus>
-        <label for="position" class="sr-only">Position</label>
-        <input type="name" name="position" id="position" class="form-control" placeholder="Position" required>
+        <h1>Add Productline</h1>
+        <form class="form-signin">
+        <label for="productlinename" class="sr-only">Productline Name</label>
+        <input type="name" name="productlinename" id="productlinename" class="form-control" placeholder="Productline Name" required autofocus>
+        <label for="productlinedescription" class="sr-only">Position</label>
+            <textarea rows="3" type="name" name="productlinedescription" id="productlinedescription" class="form-control" placeholder="Productline Description" required></textarea>
          
-        <button id="btnAddEmployee" class="btn btn-lg btn-primary btn-block" type="button">addEmployee</button>
+        <button id="btnAddProductline" class="btn btn-lg btn-primary btn-block" type="button">addProductline</button>
       </form>
       </div>
  
@@ -52,9 +75,9 @@
   <script>
   
   $(function() {
-		$('#btnAddEmployee').click(function() {
+		$('#btnAddProductline').click(function() {
 			$.ajax({
-				url: '/addEmployee',
+				url: '/addProductline',
 				data: $('form').serialize(),
 				type: 'POST',
 				success: function(response) {
