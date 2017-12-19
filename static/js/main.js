@@ -135,6 +135,7 @@ function getUsers() {
 				type: 'POST',
 				success: function(response) {
 				    $('#users').empty();
+                    //buildTable('#users',JSON.parse('{"response": [["<b>Username</b>", "<b>Open Profile</b>"]]}').response);
 					buildTableUsers('#users',JSON.parse(response).response);
 					console.log(response);
 				},
@@ -149,6 +150,7 @@ function getUsers() {
 				type: 'POST',
 				success: function(response) {
 				    $('#products').empty();
+                    //buildTable('#products',JSON.parse('{"response": [["<b>productname</b>", "<b>%</b>"]]}').response);
 					buildTable('#products',JSON.parse(response).response);
 					console.log(response);
 				},
@@ -163,6 +165,7 @@ function getUsers() {
 				type: 'POST',
 				success: function(response) {
 				    $('#lines').empty();
+                    //buildTable('#lines',JSON.parse('{"response": [["<b>productlinename</b>"]]}').response);
 					buildTable('#lines',JSON.parse(response).response);
 					console.log(response);
 				},

@@ -4,47 +4,39 @@
   <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
   <script src="/static/js/main.js"></script>
 
-  <head>
-    <title>Python Flask Bucket List App</title>
- 
-    
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
- 
-    <!-- link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet" -->
-    <link href="../static/signup.css" rel="stylesheet">
-    
-  </head>
- 
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
   <body onLoad = getUsername()>
  
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">s7DBproject</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href="/showSignIn">Sign In</a></li>
+        <li><a href="/showSignUp">Create User</a></li>
+        <li><a href="/showAddEmployee">Add Employee</a></li>
+        <li><a href="/showAddProduct">Add Product</a></li>    
+        <li><a href="/showAddEmployeeToProduct">Add Employee to Product</a></li>
+        <li><a href="/showFindProductByEmployee">Find Product by Emplouee</a></li>
+        <li><a href="/showFindEmployeesByProduct">Find Employees by Product</a></li>
+        <li><a href="/showAddProductline">Add Product Line</a></li>
+        <li><a href="/showAddProductToProductline">Add Product to Product Line</a></li>
+        <li><a href="/showGetUsers#">Get All</a></li>
+    </ul>
+  </div>
+</nav>
+      
     <div class="container">
       <div class="header">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="/">Home|</a>
-            </li>
-            <li role="presentation"><a href="/showSignIn"><b>Sign In</b>|</a>
-            </li>
-            <li role="presentation"><a href="/showSignUp">Create User|</a>
-            </li>
-            <li role="presentation"><a href="/showAddEmployee">Add Employee|</a>
-            </li>
-            <li role="presentation"><a href="/showAddProduct">Add Product|</a>
-            </li>
-            <li role="presentation"><a href="/showAddEmployeeToProduct">Add Employee To Product|</a>
-            </li>
-            <li role="presentation"><a href="/showFindProductByEmployee">Find Product By Employee|</a>
-            </li>
-            <li role="presentation"><a href="/showFindEmployeesByProduct">Find Employees By Product|</a>
-            </li>
-            <li role="presentation"><a href="/showAddProductline">Add Productline|</a>
-            </li>
-            <li role="presentation"><a href="/showAddProductToProductline">Add Product To Productline|</a>
-            </li>
-              <li role="presentation"><a href="/showGetUsers">Show All Employees</a>
-            </li>
-          </ul>
-        </nav>
         <div name="cur_user" id="cur_user">
           <h3 class="text-muted">Python Flask App</h3>
         </div>
