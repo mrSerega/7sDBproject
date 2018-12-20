@@ -12,9 +12,9 @@ app = Flask(__name__)
 
 mysql = MySQL()
 
-app.config['MYSQL_DATABASE_USER'] = 'guest'
-app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
-app.config['MYSQL_DATABASE_DB'] = 's7dbproject'
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'admin1234'
+app.config['MYSQL_DATABASE_DB'] = 'empl'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
@@ -29,8 +29,8 @@ def main():
 #log out
 @app.route('/logOut', methods=['POST'])
 def logOut():
-    app.config['MYSQL_DATABASE_USER'] = 'guest'
-    app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
+    app.config['MYSQL_DATABASE_USER'] = 'root'
+    app.config['MYSQL_DATABASE_PASSWORD'] = 'admin1234'
     global conn
     global cursor
     conn = mysql.connect()
@@ -52,8 +52,8 @@ def showSignIn():
 def signIn():
     username = request.form['username']
     userpass = request.form['userpass']
-    app.config['MYSQL_DATABASE_USER'] = username
-    app.config['MYSQL_DATABASE_PASSWORD'] = userpass
+    app.config['MYSQL_DATABASE_USER'] = 'root'
+    app.config['MYSQL_DATABASE_PASSWORD'] = 'admin1234'
     global conn
     global cursor
     conn = mysql.connect()
@@ -130,6 +130,7 @@ def showAddEmployeeToProduct():
 
 @app.route('/addEmployeeToProduct', methods=['POST'])
 def addEmployeeToProduct():
+    print (request.form)
     employeename = request.form['employeename']
     productname = request.form['productname']
     cursor.callproc('addEmployeeToProduct', (employeename, productname))
@@ -148,8 +149,20 @@ def showFindProductByEmployee():
 
 @app.route('/findProductByEmployee', methods=['POST'])
 def findProductByEmployee():
+
+
+    print ('/n/n/n hi /n/n/n/')
+    print (request.form)
+
     employeename = request.form['employeename']
+
+
+    print ('/n/n/n hi /n/n/n/')
+
     cursor.callproc('findProductByEmployee', (employeename,'kek'))
+
+    print ('/n/n/n hi /n/n/n/')
+
     data = cursor.fetchall()
 
     if len(data) is 0:
@@ -165,6 +178,9 @@ def showFindEmployeesByProduct():
 
 @app.route('/findEmployeesByProduct', methods=['POST'])
 def findEmployeesByProduct():
+
+    print (request.form)
+
     productname = request.form['productname']
     cursor.callproc('findEmployeesByProduct', (productname,'kek'))
     data = cursor.fetchall()
@@ -204,8 +220,8 @@ def showAddProductToProductline():
 
 @app.route('/addProductToProductline', methods=['POST'])
 def addProductToProdutline():
-    productname = request.form['productname']
-    productlinename = request.form['productlinename']
+    productname = request.form['prname']
+    productlinename = request.form['linename']
     cursor.callproc('addProductToProductline', (productname,productlinename))
     data = cursor.fetchall()
 
@@ -236,8 +252,18 @@ def showGetUserse():
 
 @app.route('/getUsers', methods=['POST'])
 def getUsers():
+    print ('\n\n\n##### ##### ##### ##### getUsers first ##### ##### ##### ##### \n\n\n')
+
+    print(app.config['MYSQL_DATABASE_USER'])
+    print(app.config['MYSQL_DATABASE_PASSWORD'])
+    print(app.config['MYSQL_DATABASE_DB'])
+    print(app.config['MYSQL_DATABASE_HOST'])
+
     cursor.callproc('getUsers')
+
+    print ('\n\n\n##### ##### ##### ##### second ##### ##### ##### ##### \n\n\n')
     data = cursor.fetchall()
+    print ('\n\n\n##### ##### ##### ##### third ##### ##### ##### ##### \n\n\n')
 
     if len(data) is 0:
         conn.commit()
@@ -264,6 +290,71 @@ def getLines():
     if len(data) is 0:
         conn.commit()
         return json.dumps({'message': 'fail!'})
+    else:
+        return json.dumps({'response': data})
+
+@app.route('/getTable', methods=['POST'])
+def getTable():
+    tablename = request.form['tablename']
+    cursor.callproc('getTable',(tablename,'kek'))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'fail!'})
+    else:
+        return json.dumps({'response': data})
+
+@app.route('/getActive', methods=['POST'])
+def getActive():
+    print('!!!!')
+    left = request.form['left']
+    right = request.form['right']
+    print('!!!!')
+    print(left)
+    print(right)
+    cursor.callproc('findActivePr',(left,right))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'fail!'})
+    else:
+        return json.dumps({'response': data})
+
+@app.route('/findProductByClients', methods=['POST'])
+def findProductByClient():
+    client = request.form['searchinput']
+    cursor.callproc('productOfClient', (client,'kek'))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'response': data})
+
+@app.route('/empbydist', methods=['POST'])
+def empbydist():
+    client = request.form['searchinput']
+    cursor.callproc('EmpByDist', (client,'kek'))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
+    else:
+        return json.dumps({'response': data})
+
+@app.route('/prbyline', methods=['POST'])
+def prbyline():
+    client = request.form['searchinput']
+    cursor.callproc('prbyline', (client,'kek'))
+    data = cursor.fetchall()
+
+    if len(data) is 0:
+        conn.commit()
+        return json.dumps({'message': 'User created successfully !'})
     else:
         return json.dumps({'response': data})
 
