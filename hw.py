@@ -12,9 +12,9 @@ app = Flask(__name__)
 
 mysql = MySQL()
 
-app.config['MYSQL_DATABASE_USER'] = 'guest'
-app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
-app.config['MYSQL_DATABASE_DB'] = 's7dbproject'
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'admin1234'
+app.config['MYSQL_DATABASE_DB'] = 'empl'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
@@ -29,8 +29,8 @@ def main():
 #log out
 @app.route('/logOut', methods=['POST'])
 def logOut():
-    app.config['MYSQL_DATABASE_USER'] = 'guest'
-    app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
+    app.config['MYSQL_DATABASE_USER'] = 'root'
+    app.config['MYSQL_DATABASE_PASSWORD'] = 'admin1234'
     global conn
     global cursor
     conn = mysql.connect()
