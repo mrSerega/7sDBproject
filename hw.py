@@ -29,8 +29,8 @@ def main():
 #log out
 @app.route('/logOut', methods=['POST'])
 def logOut():
-    app.config['MYSQL_DATABASE_USER'] = 'root'
-    app.config['MYSQL_DATABASE_PASSWORD'] = 'admin1234'
+    app.config['MYSQL_DATABASE_USER'] = 'guest'
+    app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
     global conn
     global cursor
     conn = mysql.connect()
@@ -52,8 +52,8 @@ def showSignIn():
 def signIn():
     username = request.form['username']
     userpass = request.form['userpass']
-    app.config['MYSQL_DATABASE_USER'] = 'root'
-    app.config['MYSQL_DATABASE_PASSWORD'] = 'admin1234'
+    app.config['MYSQL_DATABASE_USER'] = username
+    app.config['MYSQL_DATABASE_PASSWORD'] = userpass
     global conn
     global cursor
     conn = mysql.connect()
@@ -69,6 +69,9 @@ def showSignUp():
 
 @app.route('/signUp', methods=['POST'])
 def signUp():
+
+    print (request.form)
+
     _name = request.form['inputName']
     _password = request.form['inputPassword']
     _hashed_password =  _password#generate_password_hash(_password)
@@ -220,8 +223,11 @@ def showAddProductToProductline():
 
 @app.route('/addProductToProductline', methods=['POST'])
 def addProductToProdutline():
-    productname = request.form['prname']
-    productlinename = request.form['linename']
+    print ('\n\n\n hey \n\n\n')
+    print (request.form)
+    print ('\n\n\n hey \n\n\n')
+    productname = request.form['productname']
+    productlinename = request.form['productlinename']
     cursor.callproc('addProductToProductline', (productname,productlinename))
     data = cursor.fetchall()
 
